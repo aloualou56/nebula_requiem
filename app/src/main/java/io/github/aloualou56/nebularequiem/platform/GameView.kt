@@ -13,7 +13,7 @@ import kotlin.math.max
 /**
  * The game's only view: a SurfaceView the game thread draws into with a hardware canvas, and the
  * entry point for touch, mouse/stylus, wheel and gamepad-axis input. Events are converted to dp
- * (the original's CSS pixels) and queued for the game thread.
+ * and queued for the game thread.
  */
 @SuppressLint("ViewConstructor")
 class GameView(context: Context, private val loop: GameLoop) : SurfaceView(context), SurfaceHolder.Callback {
@@ -67,7 +67,7 @@ class GameView(context: Context, private val loop: GameLoop) : SurfaceView(conte
         return true
     }
 
-    /* ─────────────────────────── mouse & stylus (the original's 'mouse' / 'pen') ─────────────────────────── */
+    /* ─────────────────────────── mouse & stylus ─────────────────────────── */
 
     private var primary = false
     private var secondary = false
@@ -79,7 +79,7 @@ class GameView(context: Context, private val loop: GameLoop) : SurfaceView(conte
             e.isFromSource(InputDevice.SOURCE_MOUSE)
     }
 
-    /** Mirrors the original's e.buttons bitmask sync: chorded presses and out-of-order releases. */
+    /** Tracks the pressed-buttons bitmask: chorded presses and out-of-order releases. */
     private fun mouse(e: MotionEvent): Boolean {
         val d = density
         val x = e.x / d; val y = e.y / d
@@ -168,7 +168,7 @@ class GameView(context: Context, private val loop: GameLoop) : SurfaceView(conte
 
     companion object {
         const val MOUSE_ID = 1000
-        /** One wheel notch scrolls about as far as a browser's (100 CSS px ≈ 3 lines). */
+        /** How far one wheel notch scrolls (about three lines of text). */
         private const val WHEEL_DP = 80f
     }
 }

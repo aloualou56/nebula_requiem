@@ -78,8 +78,8 @@ class DashCache(on: Float, off: Float, private val steps: Int = 24) {
 }
 
 /**
- * Draws everything in world space (the camera matrix is already on the canvas), ported draw-for-
- * draw from the original: lighting grid, lattice, pickups, particles, hostiles, guardians, lasers,
+ * Draws everything in world space (the camera matrix is already on the canvas): lighting grid,
+ * lattice, pickups, particles, hostiles, guardians, lasers,
  * shots, the player, the nova and enemy bullets. Positions are interpolated between the last two
  * fixed simulation steps with [Game.alpha].
  */

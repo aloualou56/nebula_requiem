@@ -15,7 +15,7 @@ import kotlin.math.min
 /** Interactive element laid out in a screen's content coordinates (dp). */
 abstract class Widget {
     val r = RectF()
-    /** Stagger index (CSS --d). */
+    /** Stagger index. */
     var d = 0
     var focusable = true
     var enabled = true
@@ -214,8 +214,8 @@ class Slider(val min: Double, val max: Double, val step: Double, val get: () -> 
         val a = ctx.alpha
         val v = get(); val k = ((v - min) / (max - min)).toFloat().coerceIn(0f, 1f)
         val cy = r.centerY()
-        // the track spans the whole input with the fill split at --fill; the 14 px thumb's centre
-        // travels 7 px inside each end (Chrome), as the drag mapping does
+        // the track spans the whole input with the fill split at the value; the 14 px thumb's centre
+        // travels 7 px inside each end, as the drag mapping does
         val fx = r.left + r.width() * k
         val tx = r.left + 7f + (r.width() - 14f) * k
         Deco.fillRect(c, r.left, cy - 2f, fx, cy + 2f, Theme.withA(Pal.ION, a))

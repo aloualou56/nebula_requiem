@@ -342,7 +342,7 @@ class Director {
     private fun beginWarp() {
         sector++
         wave = 0
-        // Endless ascends each time all ten guardians have fallen (as the original's loops did):
+        // Endless ascends each time all ten guardians have fallen:
         // hostiles and guardians harden. A story run ends at its last guardian, so it never ascends
         // (one resumed from a 1.1.1 checkpoint keeps the ascension it had).
         if (mode == RunMode.ENDLESS) {

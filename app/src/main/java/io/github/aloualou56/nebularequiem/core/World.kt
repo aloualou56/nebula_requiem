@@ -15,7 +15,7 @@ import kotlin.math.sqrt
  * identical on every display; the long edge simply reveals more arena.
  */
 object World {
-    /** Viewport in dp (the CSS-pixel equivalent the original's layout constants use). */
+    /** Viewport in dp (the unit the layout constants use). */
     var dpW = 1.0; var dpH = 1.0
     /** Surface pixels per dp. */
     var density = 1.0
@@ -42,7 +42,7 @@ object World {
         return abs(oldW - w) > 1 || abs(oldH - h) > 1
     }
 
-    /** dpr ≤ the tier's cap and √(budget / area) — the original's canvas sizing, as a layer scale. */
+    /** dpr ≤ the tier's cap and √(budget / area) — the canvas sizing, as a layer scale. */
     fun updateRenderScale() {
         val q = quality
         var dpr = min(density, q.densityCap)

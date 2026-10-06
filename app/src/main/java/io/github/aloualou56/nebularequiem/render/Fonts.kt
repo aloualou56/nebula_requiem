@@ -5,7 +5,7 @@ import android.graphics.Typeface
 import io.github.aloualou56.nebularequiem.R
 
 /**
- * The original's three typefaces, bundled as static TTF instances (SIL OFL 1.1):
+ * The game's three typefaces, bundled as static TTF instances (SIL OFL 1.1):
  * Tektur (display), Chakra Petch (UI) and JetBrains Mono (numbers and labels).
  */
 object Fonts {

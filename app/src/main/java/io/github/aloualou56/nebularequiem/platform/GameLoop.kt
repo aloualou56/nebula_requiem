@@ -310,7 +310,7 @@ class GameLoop(private val host: Host, private val res: Resources) : Choreograph
                 InputQueue.KEY_DOWN -> {
                     val code = e.code ?: return@drain
                     Input.keyDown(code, e.flag, e.flag2)
-                    // Gamepad buttons drive menus through Ui.frameInput (as the original polled them).
+                    // Gamepad buttons drive menus through Ui.frameInput.
                     if (!e.flag2) ui.key(code, e.flag)
                 }
                 InputQueue.KEY_UP -> e.code?.let { Input.keyUp(it) }

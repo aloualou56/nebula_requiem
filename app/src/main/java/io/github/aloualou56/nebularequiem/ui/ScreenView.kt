@@ -7,7 +7,7 @@ import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 
-/** Viewport-derived layout mode, mirroring the original's media queries (in dp = CSS px). */
+/** Viewport-derived layout mode (breakpoints in dp). */
 class LayoutInfo {
     var w = 0f; var h = 0f
     /** (orientation: landscape) and (max-height: 500px) — phones held sideways. */
@@ -33,7 +33,7 @@ class LayoutInfo {
 }
 
 /**
- * A full-screen menu layer (the original's `<section class="screen">`): fades and scales in,
+ * A full-screen menu layer: fades and scales in,
  * staggers its children up into place, scrolls when its content is taller than the viewport,
  * and owns a focus order for keyboard and gamepad navigation.
  */
@@ -134,7 +134,7 @@ abstract class ScreenView(val ui: Ui, val id: Screen, val modal: Boolean) {
     /** What keyboard or gamepad focus lands on first (null: the primary button, else the first focusable). */
     open val defaultFocus: Widget? get() = null
 
-    /** Screen-specific shortcut keys (the original's UI.key). Return true when handled. */
+    /** Screen-specific shortcut keys. Return true when handled. */
     open fun onKey(code: String): Boolean = false
     /** Android Back / Escape / gamepad B on this screen. Return true when handled. */
     open fun onBack(): Boolean = false

@@ -21,7 +21,7 @@ import kotlin.math.pow
 /**
  * The native audio engine: a low-latency AudioTrack fed by a dedicated synthesis thread.
  *
- * Graph (as in the original):
+ * Graph:
  *   voices → [pan] → sfx / ui buses ─┐
  *   music layers (pad, arp, bass, drums, lead) → music bus ─┼→ master → compressor → limiter → out
  *   sends → reverb ───────────────────┘        music bus → bass meter (drives the visuals' pulse)
@@ -613,8 +613,8 @@ class AudioEngine(context: Context) : AudioSink {
             BUS_UI -> { L = uiL; R = uiR }
             else -> { L = layer[v.bus - BUS_LAYER0]; R = null }
         }
-        // In the original, reverb sends tap the voice before its bus gain, so muting a bus left its
-        // reverb tails audible. Here sends follow the bus volume, normalised so defaults sound the same.
+        // Reverb sends follow the bus volume (so muting a bus also silences its reverb tails),
+        // normalised so the default volumes sound the same.
         val sendK = v.reverb * when (v.bus) {
             BUS_SFX -> gSfx / DEF_SFX
             BUS_UI -> gUi / DEF_UI

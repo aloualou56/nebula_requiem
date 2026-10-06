@@ -74,7 +74,7 @@ interface UiBridge {
     fun onSettingsChanged() {}
 }
 
-/** Real-time callbacks (the original's setTimeout), run on the game thread. */
+/** Real-time (delayed) callbacks, run on the game thread. */
 object Timers {
     private class T(val at: Double, val fn: () -> Unit)
     private val list = ArrayList<T>()

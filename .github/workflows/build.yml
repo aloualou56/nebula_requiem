@@ -1,6 +1,6 @@
 # Builds the APK on every push to main, on pull requests, and on demand (Actions → Build APK → Run workflow).
 # The APK is attached to each run as an artifact: open the run and download "nebula-requiem-apk".
-# Without keystore.properties the release build is signed with a debug key, so it can be installed for testing.
+# With the signing secrets set (see "Set up release signing") every build installs over the previous one.
 name: Build APK
 
 on:
@@ -28,6 +28,29 @@ jobs:
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
+
+      # Signs with the release key when the repository has these secrets (Settings → Secrets and
+      # variables → Actions): KEYSTORE_BASE64 (the .jks file, base64-encoded), KEYSTORE_PASSWORD,
+      # KEY_ALIAS and KEY_PASSWORD. Without them the APK is signed with a temporary debug key.
+      - name: Set up release signing
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          if [ -z "$KEYSTORE_BASE64" ]; then
+            echo "::warning::No signing secrets set, so this APK is signed with a temporary debug key and won't install over other builds."
+            exit 0
+          fi
+          printf '%s' "$KEYSTORE_BASE64" | tr -d ' \r\n' | base64 --decode > release.jks
+          {
+            echo "storeFile=release.jks"
+            echo "storePassword=$KEYSTORE_PASSWORD"
+            echo "keyAlias=$KEY_ALIAS"
+            echo "keyPassword=$KEY_PASSWORD"
+          } > keystore.properties
+          echo "Signing with the release key."
 
       - name: Build the release APK
         run: |

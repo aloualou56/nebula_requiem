@@ -11,10 +11,10 @@ import kotlin.math.pow
 import kotlin.math.sin
 
 /*
- * §4 AUDIO — a native software synthesizer that reproduces the original's Web Audio graph:
- * band-limited oscillators, a shared white-noise buffer, Web Audio-spec biquads, exponential
+ * §4 AUDIO — a native software synthesizer:
+ * band-limited oscillators, a shared white-noise buffer, biquad filters, exponential
  * gain/frequency ramps, equal-power panning, an algorithmic reverb, a tempo-synced echo and a
- * DynamicsCompressor-style master. Everything here runs on the audio thread and never allocates.
+ * compressor on the master. Everything here runs on the audio thread and never allocates.
  */
 
 const val OSC_SINE = 0
@@ -45,7 +45,7 @@ class NoiseBuffer(sampleRate: Int) {
     val data = FloatArray(sampleRate * 2).also { val r = java.util.Random(1234); for (i in it.indices) it[i] = r.nextFloat() * 2 - 1 }
 }
 
-/** One biquad section (transposed direct form II) with Web Audio coefficient formulas. */
+/** One biquad section (transposed direct form II) with Audio EQ Cookbook-style coefficients. */
 class Biquad {
     var type = F_NONE
     var b0 = 1f; var b1 = 0f; var b2 = 0f; var a1 = 0f; var a2 = 0f
@@ -53,7 +53,7 @@ class Biquad {
     fun reset() { z1 = 0f; z2 = 0f }
 
     /**
-     * Lowpass/highpass interpret Q in dB (the Web Audio spec: α = sin ω₀ / (2·10^(Q/20)));
+     * Lowpass/highpass interpret Q in dB (α = sin ω₀ / (2·10^(Q/20)));
      * bandpass uses the classic Q (α = sin ω₀ / 2Q, 0 dB peak).
      */
     fun set(type: Int, freq: Double, q: Double, sr: Double) {
@@ -90,7 +90,7 @@ class Biquad {
 /**
  * A synth voice: up to 8 oscillators (or a noise source) → up to 2 filters (optionally sweeping)
  * → an exponential attack/decay envelope → pan → a bus, plus a reverb send. Covers every tone(),
- * noise() and music instrument of the original.
+ * noise() and music instrument in the game.
  */
 class Voice {
     var active = false
@@ -156,7 +156,7 @@ class Voice {
 
 /**
  * Freeverb-style algorithmic reverb (8 parallel damped combs + 4 series allpasses per channel)
- * standing in for the original's convolution with exponentially decaying noise (T = 2.6 s).
+ * with a tail like a convolution with exponentially decaying noise (T = 2.6 s).
  */
 class Reverb(sr: Int) {
     private val scale = sr / 44100.0
@@ -193,9 +193,9 @@ class Reverb(sr: Int) {
 }
 
 /**
- * Master dynamics, after the original's DynamicsCompressorNode (threshold −16 dB, knee 12 dB,
+ * Master dynamics: a compressor (threshold −16 dB, knee 12 dB,
  * ratio 5, attack 4 ms, release 220 ms) including its automatic make-up gain, then a soft limiter
- * in place of the destination's hard clip.
+ * in place of a hard clip.
  */
 class Compressor(sr: Int) {
     private val T = -16.0; private val W = 12.0; private val R = 5.0
@@ -273,7 +273,7 @@ class BassMeter(sr: Int) {
     private val k = exp(-1.0 / (0.03 * sr)).toFloat()
     private var ms = 0f
     fun process(x: Float) { val y = lp2.process(lp1.process(x)); ms = y * y + (ms - y * y) * k }
-    /** 0..1 like the original's (bin0 + bin1 + 0.6·bin2) / (255·2.6) on the −100…−30 dB byte scale. */
+    /** 0..1, as (bin0 + bin1 + 0.6·bin2) / (255·2.6) on the −100…−30 dB byte scale. */
     fun level(): Double {
         val db = 10 * log10(ms.toDouble() + 1e-12) + 6
         return ((db + 100) / 70).coerceIn(0.0, 1.0).let { (it - 0.35).coerceAtLeast(0.0) / 0.65 }

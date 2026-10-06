@@ -71,7 +71,7 @@ class Hud(private val ui: Ui) {
     fun hideBoss() { boss = null }
     fun flashHull(now: Double) { hullHitAt = now }
 
-    /** Sample the light grid behind each instrument (tl, tr, bl, br, top) — quantized like the original. */
+    /** Sample the light grid behind each instrument (tl, tr, bl, br, top), quantized. */
     private fun ambient() {
         val W = World.w; val H = World.h
         for (i in 0 until 5) {
@@ -215,7 +215,7 @@ class Hud(private val ui: Ui) {
                 c.drawRect(tx0 + 0.5f, ty + 0.5f, tx1 - 0.5f, ty + 7.5f, s)
                 y = ty + 8f
             }
-            tcBottom = kotlin.math.round(y)   // the original reads the box height rounded
+            tcBottom = kotlin.math.round(y)   // the box height is read rounded
         }
 
         /* ── top-right: stardust ── */

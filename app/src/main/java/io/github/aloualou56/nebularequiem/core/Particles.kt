@@ -10,8 +10,8 @@ import kotlin.math.sqrt
 
 /*
  * §6 PARTICLES — pooled, allocation-free during play. One "fat" particle class covers every kind
- * (the original's Spark, Ember, Smoke, Shard, Debris, Ring, Flash, FloatText, Bolt, Mote and
- * Afterimage subclasses), so a single pool serves them all.
+ * (Spark, Ember, Smoke, Shard, Debris, Ring, Flash, FloatText, Bolt, Mote and
+ * Afterimage), so a single pool serves them all.
  *
  * Integration is semi-implicit Euler with exact exponential drag: v ← (v + a·dt)·e^(−k·dt), p ← p + v·dt.
  */

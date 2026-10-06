@@ -325,7 +325,7 @@ class MainActivity : Activity(), GameLoop.Host, PlatformSink, HapticSink {
         return super.dispatchGenericMotionEvent(e)
     }
 
-    /** "Gamepad linked" the first time a controller is used (as the browser reported a pad on first input). */
+    /** "Gamepad linked" the first time a controller is used. */
     private fun padSeen(id: Int) { if (padsSeen.add(id)) loop.input.post(InputQueue.PAD_LINKED) }
 
     /* ─────────────────────────── GameLoop.Host (game thread) ─────────────────────────── */
@@ -341,7 +341,7 @@ class MainActivity : Activity(), GameLoop.Host, PlatformSink, HapticSink {
     override fun panelRate(): Float = panelHz
 
     override fun onBooted() {
-        // First launch after upgrading from the WebView edition: write its save in the native format.
+        // First launch after importing a legacy save: write it in the current format.
         if (store.importedLegacy) Save.commit()
         val cap = Save.data.settings.fpsCap
         main.post { setCap(cap) }

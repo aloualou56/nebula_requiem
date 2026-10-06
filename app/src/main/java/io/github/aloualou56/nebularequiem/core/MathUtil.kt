@@ -90,8 +90,8 @@ object Ease {
 }
 
 /**
- * CSS cubic-bezier(x1, y1, x2, y2) timing function, solved for y(x) with Newton–Raphson and a
- * bisection fallback (the same approach browsers use). Used for the UI's motion curves.
+ * Cubic-bezier(x1, y1, x2, y2) timing function, solved for y(x) with Newton–Raphson and a
+ * bisection fallback. Used for the UI's motion curves.
  */
 class CubicBezier(private val x1: Double, private val y1: Double, private val x2: Double, private val y2: Double) {
     private fun sx(t: Double): Double { val u = 1 - t; return 3 * u * u * t * x1 + 3 * u * t * t * x2 + t * t * t }

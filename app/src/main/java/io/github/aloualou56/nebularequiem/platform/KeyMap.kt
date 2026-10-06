@@ -4,8 +4,8 @@ import android.view.InputDevice
 import android.view.KeyEvent
 
 /**
- * Translates Android key events into the key codes the game logic uses (the original's
- * KeyboardEvent.code values, plus "Pad_*" names for the standard gamepad buttons).
+ * Translates Android key events into the key codes the game logic uses (names like "KeyW" and
+ * "Space", plus "Pad_*" names for the standard gamepad buttons).
  */
 object KeyMap {
     /** Physical keyboard code ("KeyW", "Space", "ArrowUp", …), or null for keys the game ignores. */
@@ -32,7 +32,7 @@ object KeyMap {
         else -> null
     }
 
-    /** Standard-mapping gamepad button → the original's pad action names (A, B, X, Start, R2, D-pad). */
+    /** Standard-mapping gamepad button → the game's pad action names (A, B, X, Start, R2, D-pad). */
     fun pad(keyCode: Int): String? = when (keyCode) {
         KeyEvent.KEYCODE_BUTTON_A -> "Pad_dash"
         KeyEvent.KEYCODE_BUTTON_B -> "Pad_bomb"

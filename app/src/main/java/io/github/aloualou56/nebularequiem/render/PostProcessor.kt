@@ -14,13 +14,12 @@ import kotlin.math.max
 /**
  * §10 POST-PROCESSING on the GPU. The world is recorded into a RenderNode; a RenderEffect graph
  * then applies:
- *   - Bloom: the original multiplied a ¼-res copy by itself (c² — a soft threshold), blurred it
- *     through ⅛ and 1/16 downsamples and added it back. Here: AGSL c² → Gaussian blur, blended
+ *   - Bloom: AGSL c² (a soft threshold) → Gaussian blur, blended
  *     onto the frame with PLUS (createBlendModeEffect), all inside one effect graph.
  *   - Radial chromatic aberration: AGSL resamples R scaled up and B scaled down about the centre
  *     (fringes grow with distance from the optical axis), plus the hard digital "glitch" shift.
  *   - Reduced render resolution for lower quality tiers: the scene node renders into a smaller
- *     compositing layer that is scaled up (the original's devicePixelRatio cap / pixel budget).
+ *     compositing layer that is scaled up (the tier's resolution cap / pixel budget).
  * Everything degrades gracefully: if any of it is unavailable the world is drawn directly.
  */
 class PostProcessor {
@@ -99,7 +98,7 @@ class PostProcessor {
     }
 
     companion object {
-        /** c² keeps highlights and crushes mid-tones; the bloom gain (0.45 + 0.3 in the original) is folded in. */
+        /** c² keeps highlights and crushes mid-tones; the bloom gain (0.45 + 0.3) is folded in. */
         const val THRESHOLD_AGSL = """
             uniform shader content;
             half4 main(float2 p) {

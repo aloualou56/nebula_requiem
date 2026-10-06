@@ -64,9 +64,9 @@ Thread a white-hot hitbox through mathematical bullet storms, graze shots to cha
 
 ## Download
 
-Get the APK from the [latest release](https://github.com/aloualou56/nebula_requiem/releases/latest); every released APK is also in this repository under [`release/`](release/). It needs Android 13 or newer. Open it on the device and allow the app you opened it from to install unknown apps. Each version installs over the previous one and keeps your progress, except 0.3: it is signed with a different key from 1.1.1 and earlier, so uninstall those first (which deletes their save).
+Get version 0.4.2 from [`release/`](release/), or the latest build from [Actions](https://github.com/aloualou56/nebula_requiem/actions/workflows/build.yml): open the newest successful run and download `nebula-requiem-apk`. It needs Android 13 or newer. Open the APK on the device and allow the app you opened it from to install unknown apps.
 
-The released APKs are signed with a development key. If a copy of the game signed with a different key is already installed, uninstall it first; uninstalling deletes that copy's save.
+If a copy of the game signed with a different key is already installed, uninstall it first; uninstalling deletes that copy's save.
 
 ## Contents
 
@@ -137,6 +137,8 @@ The Gradle wrapper (8.14) fetches everything else.
 ```
 
 The release APK is minified and resource-shrunk (about 600 KB). To sign it with your own key, copy `keystore.properties.example` to `keystore.properties` and fill it in; without that file the release build is signed with the debug key so it can still be installed for testing.
+
+GitHub Actions builds the release APK on every push to `main` ([`.github/workflows/build.yml`](.github/workflows/build.yml)). When the repository secrets `KEYSTORE_BASE64`, `KEYSTORE_PASSWORD`, `KEY_ALIAS` and `KEY_PASSWORD` are set, the APK is signed with that key, so each build installs over the last one; without them it is signed with a temporary debug key.
 
 - **Android versions**: Android 13 (API 33) and newer; targets Android 16 (API 36).
 - **Devices**: phones, tablets, foldables and Chromebooks; touch, keyboard, mouse, stylus and gamepads.

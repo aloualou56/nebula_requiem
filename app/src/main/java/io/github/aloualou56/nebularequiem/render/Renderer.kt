@@ -31,7 +31,7 @@ import kotlin.math.min
 
 /**
  * Frame compositor: background (screen space) → world (camera space) → post-processing → the
- * optical overlays the original layered in CSS (vignette, hurt and overdrive washes, film grain
+ * optical overlays (vignette, hurt and overdrive washes, film grain
  * and scanlines). The UI/HUD is drawn on top by the caller.
  */
 class Renderer {
@@ -60,7 +60,7 @@ class Renderer {
     private val scanShader = BitmapShader(scanBmp, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT)
     private val grainMatrix = Matrix()
 
-    /** Per-frame presentation updates the original ran inside render(): lights, lattice, plasma. */
+    /** Per-frame presentation updates: lights, lattice, plasma. */
     fun prepare(dt: Double) {
         val frozen = Game.state == GameState.PAUSED || Game.state == GameState.DRAFT
         val now = Env.now()
@@ -83,7 +83,7 @@ class Renderer {
         val eclipse = if (Game.director.has("eclipse") && Game.run != null) 0.5 else 1.0
         val q = World.quality
         val wantBloom = s.bloom && q == Quality.HIGH
-        // chromatic aberration (see PostFX.apply in the original)
+        // chromatic aberration
         var caK = 0f; var caShift = 0f
         if (s.aberration && q != Quality.LOW && !(Input.touchMode && q == Quality.MEDIUM)) {
             val constant = q == Quality.HIGH && !Input.touchMode
@@ -150,7 +150,7 @@ class Renderer {
         if (w != overlayW || h != overlayH) buildOverlays(w, h)
         val W = w.toFloat(); val H = h.toFloat()
         val touch = Input.touchMode
-        // Film grain and scanlines: desktop-style (keyboard/mouse) play on medium/high only, as in the original.
+        // Film grain and scanlines: desktop-style (keyboard/mouse) play on medium/high only.
         if (!touch && World.quality != Quality.LOW) {
             val step = floor(Env.now() / 100.0).toInt() % 6
             val ox = GRAIN_X[step] * 1.6f * World.density.toFloat(); val oy = GRAIN_Y[step] * 1.6f * World.density.toFloat()

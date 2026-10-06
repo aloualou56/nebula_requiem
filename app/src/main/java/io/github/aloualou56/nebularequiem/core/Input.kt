@@ -8,7 +8,7 @@ import kotlin.math.sqrt
 
 /*
  * §5 INPUT — keyboard, mouse, touch twin-sticks and gamepads, merged into actions. The platform
- * layer translates Android events into the original's key codes ("KeyW", "Space", "Pad_dash", …)
+ * layer translates Android events into key codes ("KeyW", "Space", "Pad_dash", …)
  * and pointer calls in dp, all delivered on the game thread. Edge-triggered presses are latched per
  * frame and consumed by the first simulation step, so a tap is never lost or doubled.
  */

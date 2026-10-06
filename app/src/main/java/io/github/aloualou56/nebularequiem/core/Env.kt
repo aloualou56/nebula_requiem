@@ -2,7 +2,7 @@ package io.github.aloualou56.nebularequiem.core
 
 import kotlin.math.max
 
-/** Colour tones used by toasts and banners (the CSS --*-rgb custom properties). */
+/** Colour tones used by toasts and banners. */
 enum class Tone(val color: Int) {
     ION(Pal.ION), PLASMA(Pal.PLASMA), SOLAR(Pal.SOLAR), MINT(Pal.MINT), CRIMSON(Pal.CRIMSON), WARN(Pal.CRIMSON)
 }

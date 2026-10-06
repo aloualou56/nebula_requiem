@@ -2,7 +2,7 @@ package io.github.aloualou56.nebularequiem.core
 
 /** §0 CONFIGURATION — all tunables live here so balancing never requires hunting through systems. */
 object Cfg {
-    /** The fixed simulation step (s). The original's longest sub-step; every pattern was tuned for it. */
+    /** The fixed simulation step (s); every pattern is tuned for it. */
     const val SIM_STEP = 1.0 / 120
     /** Spiral-of-death guard: never simulate more than 10 steps (1/12 s) per rendered frame. */
     const val MAX_STEPS = 10

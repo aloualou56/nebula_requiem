@@ -5,7 +5,7 @@ import kotlin.math.floor
 import kotlin.math.ln
 import kotlin.math.sqrt
 
-/** Mulberry32 — tiny, fast, statistically solid 32-bit PRNG (bit-for-bit the original's). */
+/** Mulberry32 — tiny, fast, statistically solid 32-bit PRNG. */
 class Rng(seed: Int = (Math.random() * 4294967296.0).toLong().toInt()) {
     private var s: Int = seed
 

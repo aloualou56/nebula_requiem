@@ -17,12 +17,11 @@ android {
     buildToolsVersion = "36.0.0"
 
     defaultConfig {
-        // Same application id as the WebView build, so a native release signed with the same key
-        // installs as an update and imports the old save mirror (see SaveStore.importLegacy).
+        // Keep the application id stable: a release signed with the same key installs as an update.
         applicationId = "io.github.aloualou56.nebularequiem"
         minSdk = 33          // Android 13
         targetSdk = 36
-        versionCode = 142    // 0.4.1 was 141 (above 140, the build first published as 0.3.1 by mistake); 0.4 was 130, 0.3 120, 1.1.1 111, 1.0 100–101, the WebView builds 1–3
+        versionCode = 142
         versionName = "0.4.2"
     }
 
@@ -45,7 +44,7 @@ android {
             signingConfig = signingConfigs.findByName("release") ?: signingConfigs.getByName("debug")
         }
         debug {
-            // Debug builds install next to a release (or the original WebView app) for side-by-side comparison.
+            // Debug builds install next to a release for side-by-side comparison.
             applicationIdSuffix = ".debug"
             versionNameSuffix = "-debug"
         }

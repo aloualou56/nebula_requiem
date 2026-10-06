@@ -8,9 +8,9 @@ import kotlin.math.floor
  * worst reset individual values; text that isn't JSON at all is rejected and the defaults are used.
  * Writes are debounced (250 ms) and flushed whenever the app is backgrounded.
  *
- * Version history: v1 `dust` currency · v2 hulls · v3 insight refit, quality tiers (the WebView
- * game's format) · v4 native: an optional mid-run checkpoint. (The game is landscape only; a
- * settings.orientation value left by an earlier native build is ignored and dropped on the next write.)
+ * Version history: v1 `dust` currency · v2 hulls · v3 insight refit, quality tiers
+ * · v4: an optional mid-run checkpoint. (The game is landscape only; a
+ * settings.orientation value left by an earlier build is ignored and dropped on the next write.)
  * 0.4 and 0.4.1 added fields to v4 without changing its shape, so they need no migration: the
  * flight plan and difficulty last chosen, the requiems completed and the deepest endless sector,
  * and the checkpoint's mode, guardian seed and difficulty (a save without them reads as a story
@@ -204,7 +204,7 @@ object Save {
             v = 3
         }
         if (v < 4) {
-            // v3 (WebView) had no run checkpoint; nothing to convert.
+            // v3 had no run checkpoint; nothing to convert.
             v = 4
         }
         raw["version"] = v.toDouble()

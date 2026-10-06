@@ -16,9 +16,8 @@ import kotlin.math.max
 import kotlin.math.min
 
 /**
- * The original's design tokens (CSS custom properties) and the drawing primitives its stylesheet
- * expressed declaratively: chamfered glass slabs, glow text, kbd chips and glitch titles.
- * All UI is laid out in dp, which is what the original's CSS pixels were inside the WebView.
+ * The UI's design tokens and drawing primitives: chamfered glass slabs, glow text, kbd chips and
+ * glitch titles. All UI is laid out in dp.
  */
 object Theme {
     val EASE_OUT_EXPO = io.github.aloualou56.nebularequiem.core.CubicBezier.OUT_EXPO
@@ -37,7 +36,7 @@ class TextStyle(val typeface: Typeface, val size: Float, val spacing: Float = 0f
 object Styles {
     val eyebrow get() = TextStyle(Fonts.mono400, 11f, 0.28f, Pal.INK_DIM, true)
     val hudLabel get() = TextStyle(Fonts.mono400, 10f, 0.26f, Pal.INK_DIM, true)
-    /** The same label look in the UI font (the original's toggle-row, chip and reward labels). */
+    /** The same label look in the UI font (toggle-row, chip and reward labels). */
     val hudLabelUi get() = TextStyle(Fonts.ui400, 10f, 0.26f, Pal.INK_DIM, true)
     val btn get() = TextStyle(Fonts.display600, 15f, 0.2f, Pal.INK, true)
     val btnSm get() = TextStyle(Fonts.display600, 12f, 0.16f, Pal.INK, true)
@@ -46,15 +45,15 @@ object Styles {
 }
 
 /**
- * Text measuring, wrapping (cached) and drawing with CSS-like letter spacing and alignment.
+ * Text measuring, wrapping (cached) and drawing with letter spacing and alignment.
  * Wrapped layouts are cached per (text, width, style) so steady-state frames don't allocate.
  *
  * Text is laid out at its dp size on a density-scaled canvas, so the paints use linear, unhinted
- * metrics: glyph advances stay fractional as in Chrome instead of being rounded at the small dp em
- * (rounding made 11 px monospace about 4% wider than the original and changed where lines wrap).
+ * metrics: glyph advances stay fractional instead of being rounded at the small dp em
+ * (rounding made 11 px monospace about 4% wider and changed where lines wrap).
  */
 object Txt {
-    /** CSS line-height the original's text inherits (Tailwind preflight: html { line-height: 1.5 }). */
+    /** Default line-height factor for text. */
     const val LH = 1.5f
     private const val FLAGS = Paint.ANTI_ALIAS_FLAG or Paint.SUBPIXEL_TEXT_FLAG or Paint.LINEAR_TEXT_FLAG
     val paint = Paint(FLAGS).apply { hinting = Paint.HINTING_OFF }
@@ -82,12 +81,12 @@ object Txt {
     fun width(s: String, st: TextStyle): Float { apply(st); return adv(paint, text(s, st)) }
 
     /**
-     * Width of a run as CSS lays it out: Android's measureText leaves out the letter-spacing after
-     * the last glyph, which a CSS box includes (and which shifts centred text left by half of it).
+     * Width of a run including the letter-spacing after the last glyph, which Android's measureText
+     * leaves out (without it, centred text would shift left by half of it).
      */
     private fun adv(p: Paint, t: String): Float = if (t.isEmpty()) 0f else p.measureText(t) + p.letterSpacing * p.textSize
 
-    /** Line height in dp for a style (CSS line-height factor `lh`). */
+    /** Line height in dp for a style (line-height factor `lh`). */
     fun lineHeight(st: TextStyle, lh: Float = LH): Float = st.size * lh
 
     /** Baseline offset from the top of a line box of height `lineH`. */
@@ -109,7 +108,7 @@ object Txt {
             if (para.isEmpty()) { out.add(""); continue }
             val line = StringBuilder()
             for (word in para.split(' ')) {
-                // CSS line breaking also allows a break after a hyphen inside a word ("hull-|width").
+                // Line breaking also allows a break after a hyphen inside a word ("hull-|width").
                 for ((pi, piece) in hyphenPieces(word).withIndex()) {
                     val sep = if (pi == 0 && line.isNotEmpty()) " " else ""
                     val cand = "$line$sep$piece"
@@ -153,7 +152,7 @@ object Txt {
         return w
     }
 
-    /** Text with a glow (CSS text-shadow), drawn as a soft shadow layer under the glyphs. */
+    /** Text with a glow, drawn as a soft shadow layer under the glyphs. */
     fun drawGlow(c: Canvas, s: String, st: TextStyle, x: Float, y: Float, align: Int, glow: Int, radius: Float, lineH: Float = st.size * LH, alpha: Float = 1f, color: Int = st.color) {
         val t = text(s, st)
         apply(st)
@@ -170,9 +169,9 @@ object Txt {
     private var blurRadius = -1f
 
     /**
-     * Only the text-shadow of a glyph run: its filled shape blurred in `color`. CSS draws the shadow
-     * of transparent, stroked text (the outline logo) from the filled glyphs, so the glow fills them.
-     * `cssBlur` is the CSS blur radius (2σ).
+     * Only the glow of a glyph run: its filled shape blurred in `color`. The glow of transparent,
+     * stroked text (the outline logo) comes from the filled glyphs, so it fills them.
+     * `cssBlur` is the blur radius (2σ).
      */
     fun drawShadowOnly(c: Canvas, s: String, st: TextStyle, x: Float, y: Float, align: Int, color: Int, cssBlur: Float, lineH: Float, alpha: Float = 1f) {
         val t = text(s, st)
@@ -224,7 +223,7 @@ object Deco {
     private val glowPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = 0xFF000000.toInt() }
 
     /**
-     * CSS box-shadow (0 0 blur colour) around a circle: unlike Paint.setShadowLayer on a translucent
+     * A glow (0 0 blur colour) around a circle: unlike Paint.setShadowLayer on a translucent
      * fill, the glow stays outside the element and never tints its inside.
      */
     fun outerGlowCircle(c: Canvas, x: Float, y: Float, r: Float, blur: Float, color: Int) {
@@ -245,9 +244,8 @@ object Deco {
     }
 
     /**
-     * `.slab`: chamfered panel with a dark violet glass gradient (165°), an inset 1 px edge line at
-     * 26% and 1.5 px bright stripes hugging both cut corners. (The original's inset 60 px glow at 5%
-     * is too faint to see, and a hard-edged stand-in read as a second frame, so it is omitted.)
+     * Slab: chamfered panel with a dark violet glass gradient (165°), an inset 1 px edge line at
+     * 26% and 1.5 px bright stripes hugging both cut corners.
      */
     const val SLAB_TOP = 0xD61A0F3C.toInt()
     const val SLAB_BOTTOM = 0xE6070414.toInt()
@@ -283,9 +281,8 @@ object Deco {
     }
 
     /**
-     * A key chip, vertically centred on cy; returns its width. The original's Tailwind preflight
-     * (kbd { font-size: 1em }, loaded after the game's own kbd rule) makes chips inherit their
-     * parent's font size, so callers pass it.
+     * A key chip, vertically centred on cy; returns its width. Chips take their parent's font
+     * size, so callers pass it.
      */
     fun kbd(c: Canvas, label: String, right: Float, cy: Float, alpha: Float = 1f, size: Float = 15f): Float {
         val h = kbdHeight(size)

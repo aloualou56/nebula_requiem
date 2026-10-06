@@ -278,7 +278,7 @@ class HangarScreen(ui: Ui) : ScreenView(ui, Screen.HANGAR, false) {
     override fun onShow() { hullIdx = max(0, HULL_ORDER.indexOf(Save.data.selected)) }
 
     override fun layout() {
-        // phones (compact) and foldables (narrow) get the pane layout; wide tablets fit the original
+        // phones (compact) and foldables (narrow) get the pane layout; wide tablets fit the full layout
         compactMode = L.compact || L.narrow
         if (compactMode) { layoutCompact(); return }
         dustSize = 20f
@@ -697,7 +697,7 @@ class HangarScreen(ui: Ui) : ScreenView(ui, Screen.HANGAR, false) {
         fp.shader = RadialGradient(x + W / 2, y + H / 2, W * 0.6f, Theme.withA(h.color, 0.16f), 0x0005030D, Shader.TileMode.CLAMP); fp.alpha = (255 * a).toInt()
         c.drawRect(x, y, x + W, y + H, fp)
         fp.shader = null; fp.alpha = 255
-        // blueprint grid (32 px cells in the original 480×360 canvas); a wide, short preview (phones)
+        // blueprint grid (32 px cells on a 480×360 canvas); a wide, short preview (phones)
         // scales by its height so the ship stays inside
         val s = min(W / 480f, H / 360f)
         val sp = Deco.strokePaint(); sp.color = Theme.withA(h.color, 0.08f * a); sp.strokeWidth = s   // 1 px of the 480×360 bitmap
@@ -1041,7 +1041,7 @@ class ManualScreen(ui: Ui) : ScreenView(ui, Screen.MANUAL, true) {
 /** Settings / manual header: eyebrow line (11 px × 1.5) + 4 px gap + a text-3xl title (30 px on a 36 px line). */
 internal const val HEAD_TITLE_Y = 16.5f + 4f
 internal const val HEAD_H = HEAD_TITLE_Y + 36f
-/** CSS break opportunity after a hyphen between letters ("(auto-|fire"), as in Txt.wrap. */
+/** Break opportunity after a hyphen between letters ("(auto-|fire"), as in Txt.wrap. */
 private val AFTER_HYPHEN = Regex("(?<=\\p{L}-)(?=\\p{L})")
 
 private const val EYEBROW = "Roguelike bullet-hell · Deep-field log 0x4E52"

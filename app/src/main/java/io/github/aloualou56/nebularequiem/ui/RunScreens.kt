@@ -71,7 +71,7 @@ class PerkCard(val index: Int) : Widget() {
             val s = Deco.strokePaint(); s.color = Theme.withA(edge, a); s.strokeWidth = 2f
             Deco.chamfer(path, x + 1, y + 1, w - 2, h - 2, cut); c.drawPath(path, s)
         }
-        Deco.kbd(c, (index + 1).toString(), x + w - 16f, y + 14f + Deco.kbdHeight() / 2, a)   // shown in touch mode too, as in the original
+        Deco.kbd(c, (index + 1).toString(), x + w - 16f, y + 14f + Deco.kbdHeight() / 2, a)   // shown in touch mode too
         var yy = y + pad
         val ib = Icons.get(k.id, edge)
         icon.set(x + pad, yy, x + pad + iconSize, yy + iconSize)
@@ -144,7 +144,7 @@ class PerkCard(val index: Int) : Widget() {
                 val cm = android.graphics.ColorMatrix(); cm.setRotate(0, 0f)
                 val rad = Math.toRadians((key * 6).toDouble())
                 val cs = kotlin.math.cos(rad).toFloat(); val sn = kotlin.math.sin(rad).toFloat()
-                // standard hue-rotate matrix (as CSS filter: hue-rotate)
+                // standard hue-rotate matrix
                 cm.set(floatArrayOf(
                     0.213f + cs * 0.787f - sn * 0.213f, 0.715f - cs * 0.715f - sn * 0.715f, 0.072f - cs * 0.072f + sn * 0.928f, 0f, 0f,
                     0.213f - cs * 0.213f + sn * 0.143f, 0.715f + cs * 0.285f + sn * 0.140f, 0.072f - cs * 0.072f - sn * 0.283f, 0f, 0f,

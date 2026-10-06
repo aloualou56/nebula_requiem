@@ -16,9 +16,9 @@ import java.util.concurrent.TimeUnit
  * a new file and renames it over the old one, so a crash mid-write never leaves half a save), with
  * the previous good version kept in nebula_save.prev.json.
  *
- * Writes run on a background thread and coalesce: the game thread never touches the disk. On the
- * first launch after upgrading from the WebView edition, the save mirror that app kept in
- * SharedPreferences is imported (and migrated by Save).
+ * Writes run on a background thread and coalesce: the game thread never touches the disk. On first
+ * launch, a legacy save mirror kept in SharedPreferences, if there is one, is imported (and
+ * migrated by Save).
  */
 class FileSaveStore(context: Context) : SaveStore {
     private val app = context.applicationContext
@@ -35,7 +35,7 @@ class FileSaveStore(context: Context) : SaveStore {
     private var lastWritten: String? = null
     @Volatile private var lastWriteOk = true
 
-    /** True when read() returned the WebView edition's save rather than a native file. */
+    /** True when read() returned the legacy SharedPreferences save rather than a save file. */
     var importedLegacy = false
         private set
 

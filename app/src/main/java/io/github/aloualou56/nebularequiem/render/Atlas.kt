@@ -29,7 +29,7 @@ class Region(x: Int, y: Int, w: Int, h: Int) {
  * so thousands of bullets, embers and glows draw in a handful of GPU batches. Nothing is drawn with
  * blur at run time.
  *
- * The original's two-tone sprites (white core over a coloured body) are split into a tintable
+ * The two-tone sprites (white core over a coloured body) are split into a tintable
  * BODY layer and an untinted white DETAIL layer.
  */
 class Atlas {

@@ -16,7 +16,7 @@ import kotlin.math.sqrt
  * space scaled by its radius; the same vertex list draws the ship and feeds the shatter effect.
  */
 
-/** Spawn options (the original's `o` object literal). */
+/** Spawn options. */
 class SpawnOpts {
     var elite = false; var scale = 1.0; var hpScale = 1.0; var speedScale = 1.0; var rewardScale = 1.0
     var angle = Double.NaN; var instant = false; var gen = 0; var heading = Double.NaN
