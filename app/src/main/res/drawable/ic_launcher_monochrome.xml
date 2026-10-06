@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Themed-icon layer (Android 13+): the system tints this silhouette. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:pathData="M24,54a30,30 0,1 1,60 0a30,30 0,1 1,-60 0z"
+        android:strokeWidth="2.4"
+        android:strokeColor="#FF000000" />
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="M54,32.55L47.4,50.15L36.4,61.15L35.3,72.15L47.4,67.75L54,75.45L60.6,67.75L72.7,72.15L71.6,61.15L60.6,50.15Z" />
+</vector>

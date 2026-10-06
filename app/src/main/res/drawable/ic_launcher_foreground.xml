@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The Lancer hull, nose up, inside a plasma ring. Everything sits within the 66dp safe zone. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- outer glow ring -->
+    <path
+        android:pathData="M24,54a30,30 0,1 1,60 0a30,30 0,1 1,-60 0z"
+        android:strokeWidth="5"
+        android:strokeColor="#40FF3AD9" />
+    <path
+        android:pathData="M24,54a30,30 0,1 1,60 0a30,30 0,1 1,-60 0z"
+        android:strokeWidth="1.8"
+        android:strokeColor="#FFFF3AD9" />
+    <!-- engine plumes -->
+    <path
+        android:fillColor="#40FFC145"
+        android:pathData="M45.2,72.6m-4.2,0a4.2,4.2 0,1 1,8.4 0a4.2,4.2 0,1 1,-8.4 0M62.8,72.6m-4.2,0a4.2,4.2 0,1 1,8.4 0a4.2,4.2 0,1 1,-8.4 0" />
+    <path
+        android:fillColor="#FFFFC145"
+        android:pathData="M45.2,72.2m-2,0a2,2 0,1 1,4 0a2,2 0,1 1,-4 0M62.8,72.2m-2,0a2,2 0,1 1,4 0a2,2 0,1 1,-4 0" />
+    <path
+        android:fillColor="#FFFFF4D6"
+        android:pathData="M45.2,72.2m-0.9,0a0.9,0.9 0,1 1,1.8 0a0.9,0.9 0,1 1,-1.8 0M62.8,72.2m-0.9,0a0.9,0.9 0,1 1,1.8 0a0.9,0.9 0,1 1,-1.8 0" />
+    <!-- hull halo -->
+    <path
+        android:pathData="M54,32.55L47.4,50.15L36.4,61.15L35.3,72.15L47.4,67.75L54,75.45L60.6,67.75L72.7,72.15L71.6,61.15L60.6,50.15Z"
+        android:strokeWidth="4"
+        android:strokeColor="#553DF2FF"
+        android:strokeLineJoin="round" />
+    <!-- hull -->
+    <path
+        android:pathData="M54,32.55L47.4,50.15L36.4,61.15L35.3,72.15L47.4,67.75L54,75.45L60.6,67.75L72.7,72.15L71.6,61.15L60.6,50.15Z"
+        android:strokeWidth="1.2"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeLineJoin="round">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="linear"
+                android:startX="54"
+                android:startY="32"
+                android:endX="54"
+                android:endY="76">
+                <item android:offset="0" android:color="#FFE6FDFF" />
+                <item android:offset="0.5" android:color="#FF3DF2FF" />
+                <item android:offset="1" android:color="#FF1C6E8A" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <!-- panel lines -->
+    <path
+        android:pathData="M54,41.4L54,63.4M44.1,59L39.7,68.9M63.9,59L68.3,68.9"
+        android:strokeWidth="1.1"
+        android:strokeColor="#CC05030D"
+        android:strokeLineCap="round" />
+</vector>

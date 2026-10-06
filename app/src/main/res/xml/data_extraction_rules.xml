@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The save is a small versioned JSON file in internal storage (plus its rolling backup); back it
+     up and carry it to new devices. -->
+<data-extraction-rules>
+    <cloud-backup>
+        <include domain="file" path="saves/" />
+    </cloud-backup>
+    <device-transfer>
+        <include domain="file" path="saves/" />
+    </device-transfer>
+</data-extraction-rules>

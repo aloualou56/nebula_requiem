@@ -1,0 +1,65 @@
+# Publishes the GitHub release for a version (v1.0 → release/nebula-requiem-1.0.apk), attaching the
+# APK committed under release/ (the exact file that was built and tested) with release/notes-<version>.md.
+#
+# - Pushing a version tag creates the release for it, or refreshes its APK and notes if it already exists.
+# - Running the workflow by hand for a tag that doesn't exist yet stages a draft release from the
+#   chosen branch (or refreshes the draft); with "publish" it publishes the release instead, which
+#   creates the tag at the chosen branch's commit.
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Version tag to release, for example v1.0
+        required: true
+      publish:
+        description: Publish the release (creates the tag at this branch's commit) instead of keeping a draft
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      # the tag on a tag push; the chosen branch on a manual run
+      - uses: actions/checkout@v5
+
+      - name: Create the release, or refresh its APK and notes
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          TAG: ${{ inputs.tag || github.ref_name }}
+          MANUAL: ${{ github.event_name == 'workflow_dispatch' }}
+          PUBLISH: ${{ inputs.publish || false }}
+        run: |
+          version="${TAG#v}"
+          apk="release/nebula-requiem-${version}.apk"
+          notes="release/notes-${version}.md"
+          for f in "$apk" "$notes"; do
+            [ -f "$f" ] || { echo "::error::$f is missing for $TAG"; exit 1; }
+          done
+          if [ "$MANUAL" = true ] && git ls-remote --exit-code --tags origin "refs/tags/$TAG" >/dev/null; then
+            echo "::error::$TAG already exists: push it again, or delete it, rather than running this by hand"
+            exit 1
+          fi
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "$apk" --clobber
+            gh release edit "$TAG" --notes-file "$notes"
+            if [ "$PUBLISH" = true ]; then
+              # the tag goes on the commit that carries this APK, not where the draft was first staged
+              gh release edit "$TAG" --target "$GITHUB_SHA" --draft=false --latest
+            fi
+          elif [ "$MANUAL" = true ]; then
+            # a published release is marked Latest outright: GitHub's automatic pick goes by version
+            # number, and 0.3 sorts below 1.1.1. Drafts can't be Latest, so they don't get the flag.
+            mode=(--draft); [ "$PUBLISH" = true ] && mode=(--latest)
+            gh release create "$TAG" "$apk" "${mode[@]}" --target "$GITHUB_SHA" --title "Nebula Requiem $version" --notes-file "$notes"
+          else
+            gh release create "$TAG" "$apk" --verify-tag --title "Nebula Requiem $version" --notes-file "$notes"
+          fi

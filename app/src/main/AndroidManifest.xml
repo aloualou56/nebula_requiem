@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Fully offline: no INTERNET permission. Everything (art, music, sound) is generated on device.
+         VIBRATE is a normal (install-time) permission used for impact haptics; it can be turned off
+         under Settings → Vibration. -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
+    <uses-feature android:name="android.hardware.gamepad" android:required="false" />
+
+    <application
+        android:allowBackup="true"
+        android:appCategory="game"
+        android:isGame="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:enableOnBackInvokedCallback="true"
+        android:hardwareAccelerated="true"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.NebulaRequiem"
+        tools:targetApi="36">
+
+        <!-- Landscape only, everywhere: on Android 14+ large screens the system Settings may offer
+             per-app aspect-ratio / full-screen overrides that would let a landscape-locked app run
+             in a portrait window; this game opts out of both. -->
+        <property
+            android:name="android.window.PROPERTY_COMPAT_ALLOW_USER_ASPECT_RATIO_OVERRIDE"
+            android:value="false" />
+        <property
+            android:name="android.window.PROPERTY_COMPAT_ALLOW_USER_ASPECT_RATIO_FULLSCREEN_OVERRIDE"
+            android:value="false" />
+
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboard|keyboardHidden|navigation|uiMode|density|fontScale|fontWeightAdjustment|layoutDirection|locale|touchscreen|colorMode|grammaticalGender|mcc|mnc|assetsPaths"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:resizeableActivity="false"
+            android:screenOrientation="userLandscape"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity,NonResizeableActivity">
+            <!-- Landscape only: a twin-stick shooter wants a thumb at each side. userLandscape flips
+                 between the two landscape sides only when the player allows rotation, and never
+                 turns portrait. Not resizeable, so phones never squeeze it into a portrait-shaped
+                 split-screen half; large screens letterbox it in landscape instead. The game
+                 category (android:appCategory) keeps this lock in force on Android 16 large screens,
+                 where orientation locks of non-game apps are ignored. -->
+            <property
+                android:name="android.window.PROPERTY_COMPAT_ALLOW_RESTRICTED_RESIZABILITY"
+                android:value="true" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

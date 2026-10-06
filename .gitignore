@@ -1,0 +1,15 @@
+.gradle/
+.kotlin/
+build/
+local.properties
+keystore.properties
+*.jks
+*.keystore
+*.apk
+*.aab
+.idea/
+*.iml
+captures/
+
+# The published release APKs (release/), attached to GitHub releases by .github/workflows/release.yml
+!release/*.apk
