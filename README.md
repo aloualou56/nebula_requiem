@@ -161,7 +161,7 @@ The test suite (97 tests) covers:
 - **Scroll physics** (`ScrollPhysicsTest`): the velocity tracker (accelerating flicks, batched samples, resting fingers), rubber-band overscroll and its inverse, fling decay, and bounces that look the same at any frame rate.
 - **Platform** (`MainActivityTest`): the landscape lock, the activity lifecycle, key handling, booting the real game thread, running frames, launching a run from the keyboard and pausing on Back.
 
-**Note**: the game was developed and tested headlessly (JVM simulation tests and Robolectric rendering on the software canvas). The GPU post-processing path, audio output and refresh-rate behaviour depend on device hardware and have not been tested on a physical device.
+**Note**: the game was first developed and tested headlessly (JVM simulation tests and Robolectric rendering on the software canvas). It has since also been tested on physical Android phones by a lot of people.
 
 ## Architecture
 
